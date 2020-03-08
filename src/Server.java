@@ -6,6 +6,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.Scanner;
 
 public class Server implements Runnable{
 	
@@ -25,6 +26,8 @@ public class Server implements Runnable{
 	@Override
 	public void run() {
 		while(true) {
+			
+			//Receive a message from the client
 			try {
 				byte[] data = new byte[100];
 				packet = new DatagramPacket(data, data.length); //packet for receiving.
@@ -34,17 +37,23 @@ public class Server implements Runnable{
 				e.printStackTrace();
 			}
 			
-			System.out.println("Packet received from: " + packet.getSocketAddress() + "\n");
-			System.out.println("Destination port: " + packet.getPort() + ", ");
-			int len = packet.getLength();
-			System.out.println("Length: " + len + ". ");
+			System.out.println("Packet received from socketAddress: " + packet.getSocketAddress() + "\n");
 			System.out.println("Containing String: ");
-			System.out.print(new String(packet.getData(), 0, len) + "\n");
-			System.out.println("Containing Bytes: ");
-			for(int b = 0; b < len; b++) {
-				System.out.print(packet.getData()[b] + ", ");
-			}
+			System.out.print(new String(packet.getData(), 0, packet.getLength()) + "\n");
 			System.out.print("\n");
+			
+			//Create a reply packet with a message in it
+			Scanner sc = new Scanner(System.in);
+			System.out.print("Enter Response: ");
+			String message = sc.nextLine();
+			byte[] msg = message.getBytes();
+			packet = new DatagramPacket(msg, msg.length, packet.getAddress(), packet.getPort());
+			try {
+				sendReceiveSocket.send(packet);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
 		}
 	}
 
