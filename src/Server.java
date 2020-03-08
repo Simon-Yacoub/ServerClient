@@ -40,7 +40,7 @@ public class Server implements Runnable{
 			Scanner sc = new Scanner(System.in);
 			System.out.print("Enter Response: ");
 			String message = sc.nextLine();
-			sc.close();
+			
 			byte[] msg = message.getBytes();
 			packet = new DatagramPacket(msg, msg.length, packet.getAddress(), packet.getPort());
 			try {
