@@ -59,7 +59,6 @@ public class Client {
 			//System.out.println("Packet received from socketAddress: " + packet.getSocketAddress() + "\n");
 			System.out.print("Server: ");
 			System.out.print(new String(packet.getData(), 0, packet.getLength()) + "\n");
-			System.out.print("\n");
 
 		}
 
