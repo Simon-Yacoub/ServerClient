@@ -25,6 +25,7 @@ public class Server implements Runnable{
 
 	@Override
 	public void run() {
+		System.out.print("Server Online.\n");
 		while(true) {
 			
 			//Receive a message from the client
@@ -38,9 +39,8 @@ public class Server implements Runnable{
 			}
 			
 			//System.out.println("Packet received from socketAddress: " + packet.getSocketAddress() + "\n");
-			System.out.println("Client: ");
+			System.out.print("Client: ");
 			System.out.print(new String(packet.getData(), 0, packet.getLength()) + "\n");
-			System.out.print("\n");
 			
 			//Create a reply packet with a message in it
 			Scanner sc = new Scanner(System.in);
