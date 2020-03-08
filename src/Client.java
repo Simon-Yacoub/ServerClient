@@ -35,7 +35,6 @@ public class Client {
 			System.out.print("Enter message to send to server: ");
 			Scanner sc = new Scanner(System.in);
 			String message = sc.nextLine();
-			sc.close();
 			byte[] data = message.getBytes();
 			DatagramPacket packet = new DatagramPacket(data, data.length, serverAddress, SERVER_PORT);
 			try {
