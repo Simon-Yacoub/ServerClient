@@ -26,11 +26,21 @@ public class Client {
 	}
 
 	public static void main(String[] args) {
+		try {
+			sendReceiveSocket = new DatagramSocket();
+		} catch (SocketException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		System.out.println("Local Port Num: " + sendReceiveSocket.getLocalPort());
+		System.out.println("Port Num: " + sendReceiveSocket.getPort());
 		Scanner sc = new Scanner(System.in);
+		serverAddress = deserializeServerInetAddress();
 		while(true) {
 			System.out.println("Enter message to send to server:");
 			String message = sc.nextLine();
 			byte[] data = message.getBytes();
+			System.out.println(serverAddress + " " + data + " " + data.length);
 			DatagramPacket packet = new DatagramPacket(data, data.length, serverAddress, SERVER_PORT);
 			try {
 				sendReceiveSocket.send(packet);
