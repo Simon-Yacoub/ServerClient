@@ -28,12 +28,12 @@ public class Client {
 		} catch (SocketException e1) {
 			e1.printStackTrace();
 		}
-		Scanner sc = new Scanner(System.in);
 		serverAddress = deserializeServerInetAddress();
 		while (true) {
 
 			// Send a message to server
 			System.out.print("Enter message to send to server: ");
+			Scanner sc = new Scanner(System.in);
 			String message = sc.nextLine();
 			sc.close();
 			byte[] data = message.getBytes();
