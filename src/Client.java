@@ -27,12 +27,15 @@ public class Client {
 	}
 
 	public static void main(String[] args) {
-		Server me = new Server();
+		Client me = new Client();
 		System.out.println("Client\nAddress: " + me.getAddress() + ". Port Num: " + me.getPortNum());
+		InetAddress serverAddress = deserializeServerInetAddress();
+		System.out.println("Server Address: " + serverAddress);
+		
 
 	}
 
-	public InetAddress deserializeServerInetAddress() {
+	public static InetAddress deserializeServerInetAddress() {
 		// Deserialization
 		InetAddress serverAddress = null;
 		try {
