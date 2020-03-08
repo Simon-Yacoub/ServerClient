@@ -28,23 +28,23 @@ public class Server implements Runnable{
 			try {
 				byte[] data = new byte[100];
 				packet = new DatagramPacket(data, data.length); //packet for receiving.
-				System.out.print("Server Idly Waiting.");
+				System.out.print("Server Idly Waiting.\n");
 				sendReceiveSocket.receive(packet);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			
-			System.out.println("Packet received from: " + packet.getAddress() + "\n");
+			System.out.println("Packet received from: " + packet.getSocketAddress() + "\n");
 			System.out.println("Destination port: " + packet.getPort() + ", ");
 			int len = packet.getLength();
 			System.out.println("Length: " + len + ". ");
 			System.out.println("Containing String: ");
-			System.out.println(new String(packet.getData(), 0, len) + "\n");
+			System.out.print(new String(packet.getData(), 0, len) + "\n");
 			System.out.println("Containing Bytes: ");
-			for(byte b : packet.getData()) {
-				System.out.print(b + ", ");
+			for(int b = 0; b < len; b++) {
+				System.out.print(packet.getData()[b] + ", ");
 			}
-			
+			System.out.print("\n");
 		}
 	}
 
