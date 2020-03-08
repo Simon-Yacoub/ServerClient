@@ -1,0 +1,17 @@
+About this project
+--------------------------------------------------------------------------------------------------------------------
+This project implements the Server Client model using user datagram protocol (UDP) and allows Servers and Clients
+to exchange messages between each other. The class ServerSetup saves(serializes) the InetAddress (IP) of the server in a text 
+file and then Clients extract(deserializes) the InetAddress from this text file to learn where to send their packets. 
+This allows the Server and Clients to be run on multiple computers (instead of locally on one computer).
+
+Setup
+--------------------------------------------------------------------------------------------------------------------
+Clone my ServerClient repository.
+Run ServerSetup on the computer that will act as the server. This will save the IP address in the address.txt file.
+Push the changes made to address.txt to your cloned repo. 
+On the Client computer import the files from the repo. 
+Now the initial setup is complete
+Run ServerSetup again on the Server computer
+Run Client on the Client computer.
+Send messages back and forth using the console :).
