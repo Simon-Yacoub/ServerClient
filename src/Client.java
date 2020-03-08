@@ -5,19 +5,16 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
-import java.net.UnknownHostException;
 import java.util.Scanner;
 
 public class Client {
 	private static DatagramSocket sendReceiveSocket;
-	private int portNum;
 	private static InetAddress serverAddress;
 	private final static int SERVER_PORT = 5000;
 
 	public Client() {
 		try {
 			sendReceiveSocket = new DatagramSocket();
-			portNum = sendReceiveSocket.getLocalPort();
 			serverAddress = deserializeServerInetAddress();
 		} catch (SocketException e) {
 			e.printStackTrace();
@@ -38,6 +35,7 @@ public class Client {
 			// Send a message to server
 			System.out.print("Enter message to send to server: ");
 			String message = sc.nextLine();
+			sc.close();
 			byte[] data = message.getBytes();
 			DatagramPacket packet = new DatagramPacket(data, data.length, serverAddress, SERVER_PORT);
 			try {
@@ -55,8 +53,7 @@ public class Client {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-
-			//System.out.println("Packet received from socketAddress: " + packet.getSocketAddress() + "\n");
+			
 			System.out.print("Server: ");
 			System.out.print(new String(packet.getData(), 0, packet.getLength()) + "\n");
 
@@ -65,14 +62,11 @@ public class Client {
 	}
 
 	public static InetAddress deserializeServerInetAddress() {
-		// Deserialization
 		InetAddress serverAddress = null;
 		try {
-			// Reading the object from a file
 			FileInputStream file = new FileInputStream("address.txt");
 			ObjectInputStream in = new ObjectInputStream(file);
 
-			// Method for deserialization of object
 			serverAddress = (InetAddress) in.readObject();
 
 			in.close();
@@ -85,10 +79,6 @@ public class Client {
 
 		return serverAddress;
 
-	}
-
-	public int getPortNum() {
-		return portNum;
 	}
 
 }

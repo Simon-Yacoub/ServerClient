@@ -1,11 +1,7 @@
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.InetAddress;
 import java.net.SocketException;
-import java.net.UnknownHostException;
 import java.util.Scanner;
 
 public class Server implements Runnable{
@@ -25,20 +21,18 @@ public class Server implements Runnable{
 
 	@Override
 	public void run() {
-		System.out.print("Server Online.\n");
+		System.out.print("Server Online and Waiting.\n");
 		while(true) {
 			
 			//Receive a message from the client
 			try {
 				byte[] data = new byte[100];
 				packet = new DatagramPacket(data, data.length); //packet for receiving.
-				//System.out.print("Server Idly Waiting.\n");
 				sendReceiveSocket.receive(packet);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			
-			//System.out.println("Packet received from socketAddress: " + packet.getSocketAddress() + "\n");
 			System.out.print("Client: ");
 			System.out.print(new String(packet.getData(), 0, packet.getLength()) + "\n");
 			
@@ -46,6 +40,7 @@ public class Server implements Runnable{
 			Scanner sc = new Scanner(System.in);
 			System.out.print("Enter Response: ");
 			String message = sc.nextLine();
+			sc.close();
 			byte[] msg = message.getBytes();
 			packet = new DatagramPacket(msg, msg.length, packet.getAddress(), packet.getPort());
 			try {
