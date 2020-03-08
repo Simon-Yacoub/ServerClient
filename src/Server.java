@@ -7,61 +7,45 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
-public class Server {
+public class Server implements Runnable{
 	
 	private DatagramSocket sendReceiveSocket;
 	private DatagramPacket packet;
-	private int portNum;
-	private InetAddress address;
+	private final int PORT = 5000;
 	
 	public Server() {
 		try {
-			sendReceiveSocket = new DatagramSocket();
-			//sendReceiveSocket.connect(address, portNum);
-			portNum = sendReceiveSocket.getLocalPort();
-			address = InetAddress.getLocalHost();
+			sendReceiveSocket = new DatagramSocket(PORT);
 		} catch (SocketException e) {
-			e.printStackTrace();
-		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
 		
 	}
-	
-	public void serializeInetAddress() {
-		// Serialization  
-        try
-        {    
-            //Saving of object in a file 
-            FileOutputStream file = new FileOutputStream("address.txt"); 
-            ObjectOutputStream out = new ObjectOutputStream(file); 
-              
-            // Method for serialization of object 
-            out.writeObject(address); 
-              
-            out.close(); 
-            file.close();  
-  
-        }catch(IOException ex) 
-        { 
-            System.out.println("IOException is caught"); 
-        } 
-  
-	}
 
-	public InetAddress getAddress() {
-		return address;
-	}
-
-	public int getPortNum() {
-		return portNum;
-	}
-	
-	public static void main(String[] args) {
-		Server me = new Server();
-		System.out.println("Server\nAddress: " + me.getAddress() + ". Port Num: " + me.getPortNum());
-		me.serializeInetAddress();
-
+	@Override
+	public void run() {
+		while(true) {
+			try {
+				byte[] data = new byte[100];
+				packet = new DatagramPacket(data, data.length); //packet for receiving.
+				System.out.print("Server Idly Waiting.");
+				sendReceiveSocket.receive(packet);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			System.out.println("Packet received from: " + packet.getAddress() + "\n");
+			System.out.println("Destination port: " + packet.getPort() + ", ");
+			int len = packet.getLength();
+			System.out.println("Length: " + len + ". ");
+			System.out.println("Containing String: ");
+			System.out.println(new String(packet.getData(), 0, len) + "\n");
+			System.out.println("Containing Bytes: ");
+			for(byte b : packet.getData()) {
+				System.out.print(b + ", ");
+			}
+			
+		}
 	}
 
 }

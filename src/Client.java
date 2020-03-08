@@ -6,31 +6,39 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.Scanner;
 
 public class Client {
-	private DatagramSocket sendReceiveSocket;
-	private DatagramPacket packet;
+	private static DatagramSocket sendReceiveSocket;	
 	private int portNum;
-	private InetAddress address;
+	private static InetAddress serverAddress;
+	private final static int SERVER_PORT = 5000;
 
 	public Client() {
 		try {
 			sendReceiveSocket = new DatagramSocket();
 			portNum = sendReceiveSocket.getLocalPort();
-			address = InetAddress.getLocalHost();
+			serverAddress = deserializeServerInetAddress();
 		} catch (SocketException e) {
-			e.printStackTrace();
-		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
 
 	}
 
 	public static void main(String[] args) {
-		Client me = new Client();
-		System.out.println("Client\nAddress: " + me.getAddress() + ". Port Num: " + me.getPortNum());
-		InetAddress serverAddress = deserializeServerInetAddress();
-		System.out.println("Server Address: " + serverAddress);
+		Scanner sc = new Scanner(System.in);
+		while(true) {
+			System.out.println("Enter message to send to server:");
+			String message = sc.nextLine();
+			byte[] data = message.getBytes();
+			DatagramPacket packet = new DatagramPacket(data, data.length, serverAddress, SERVER_PORT);
+			try {
+				sendReceiveSocket.send(packet);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+		}
 		
 
 	}
@@ -56,10 +64,6 @@ public class Client {
 		
 		return serverAddress;
 
-	}
-
-	public InetAddress getAddress() {
-		return address;
 	}
 
 	public int getPortNum() {
