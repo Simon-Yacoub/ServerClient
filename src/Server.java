@@ -31,14 +31,14 @@ public class Server implements Runnable{
 			try {
 				byte[] data = new byte[100];
 				packet = new DatagramPacket(data, data.length); //packet for receiving.
-				System.out.print("Server Idly Waiting.\n");
+				//System.out.print("Server Idly Waiting.\n");
 				sendReceiveSocket.receive(packet);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			
-			System.out.println("Packet received from socketAddress: " + packet.getSocketAddress() + "\n");
-			System.out.println("Containing String: ");
+			//System.out.println("Packet received from socketAddress: " + packet.getSocketAddress() + "\n");
+			System.out.println("Client: ");
 			System.out.print(new String(packet.getData(), 0, packet.getLength()) + "\n");
 			System.out.print("\n");
 			
